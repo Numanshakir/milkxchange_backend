@@ -1,7 +1,17 @@
-import { Controller, Post, Body, Get, UseGuards, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Param,
+  ValidationPipe,
+  UsePipes,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
+import { SocialSignupDto } from './dto/sign_up.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -15,6 +25,12 @@ export class AuthController {
     @Body() body: { name: string; email: string; password: string },
   ) {
     return this.authService.signup(body.name, body.email, body.password);
+  }
+
+  @Post('social-signup')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async socialSignup(@Body() body: SocialSignupDto) {
+    return this.authService.socialSignup(body);
   }
 
   @Post('signin')

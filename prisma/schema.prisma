@@ -17,8 +17,10 @@ datasource db {
 }
 
 model User {
-  id        Int   @id @default(autoincrement())
-  email     String   @unique
-  password  String
+  id    Int     @id @default(autoincrement())
+  uid   String? @unique  // ✅ Nullable for normal signup
+  email String? @unique  // ✅ Nullable for social signup
+  name  String? 
+  password String?  // ✅ Required for normal signup, null for social
   createdAt DateTime @default(now())
 }

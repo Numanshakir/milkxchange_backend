@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { SocialSignupDto } from './dto/sign_up.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +15,13 @@ export class AuthService {
     return this.userService.createUser(name, email, password);
   }
 
+  async socialSignup(dto: SocialSignupDto) {
+    return this.userService.createSocialUser(dto);
+  }
+
   async signin(email: string, password: string) {
     const user = await this.userService.findUserByEmail(email);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await bcrypt.compare(password, user.password!))) {
       throw new UnauthorizedException('Invalid email or password');
     }
     const token = this.jwtService.sign({ userId: user.id });
