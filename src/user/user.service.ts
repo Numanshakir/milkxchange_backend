@@ -16,11 +16,9 @@ export class UserService {
   async findUserByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
-
   async findUserById(id: number) {
     return this.prisma.user.findUnique({
-      where: { id },
-      select: { id: true, email: true },
+      where: { id: Number(id) }, // ✅ This ensures `id` remains a number
     });
   }
 }

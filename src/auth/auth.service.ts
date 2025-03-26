@@ -20,6 +20,6 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
     const token = this.jwtService.sign({ userId: user.id });
-    return { access_token: token };
+    return { access_token: token, user };
   }
 }
