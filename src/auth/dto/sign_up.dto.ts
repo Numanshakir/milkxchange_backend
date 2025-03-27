@@ -24,7 +24,7 @@ export class SocialSignupDto {
   name?: string | null; // ✅ Optional
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   uid: string; // ✅ Required for social signup
 
   @IsString()

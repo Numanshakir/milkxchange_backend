@@ -6,7 +6,6 @@ import {
   UseGuards,
   Param,
   ValidationPipe,
-  UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -28,8 +27,7 @@ export class AuthController {
   }
 
   @Post('social-signup')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async socialSignup(@Body() body: SocialSignupDto) {
+  async socialSignup(@Body(ValidationPipe) body: SocialSignupDto) {
     return this.authService.socialSignup(body);
   }
 
@@ -42,6 +40,15 @@ export class AuthController {
   @Get('profile/:id')
   getProfile(@Param('id') id: number) {
     const user = this.userService.findUserById(id);
+    if (user === null) {
+      throw new Error('User not found');
+    }
+    return user;
+  }
+
+  @Get('users')
+  getAllUsers() {
+    const user = this.userService.findAllUsers();
     if (user === null) {
       throw new Error('User not found');
     }

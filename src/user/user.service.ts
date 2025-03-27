@@ -28,4 +28,8 @@ export class UserService {
       where: { id: Number(id) }, // ✅ This ensures `id` remains a number
     });
   }
+
+  async findAllUsers() {
+    return this.prisma.user.findMany();
+  }
 }
