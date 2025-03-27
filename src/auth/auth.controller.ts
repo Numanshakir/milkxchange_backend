@@ -26,7 +26,7 @@ export class AuthController {
     return this.authService.signup(body.name, body.email, body.password);
   }
 
-  @Post('social-signup')
+  @Post('social-signin')
   async socialSignup(@Body(ValidationPipe) body: SocialSignupDto) {
     return this.authService.socialSignup(body);
   }

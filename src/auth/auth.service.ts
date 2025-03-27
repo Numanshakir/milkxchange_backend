@@ -16,7 +16,15 @@ export class AuthService {
   }
 
   async socialSignup(dto: SocialSignupDto) {
-    return this.userService.createSocialUser(dto);
+    const user = await this.userService.findUserByUID(dto.uid);
+    if (!user) {
+      const newUser = await this.userService.createSocialUser(dto);
+      const token = this.jwtService.sign({ userId: newUser.id });
+      return { access_token: token, newUser };
+    } else {
+      const token = this.jwtService.sign({ userId: user.id });
+      return { access_token: token, user };
+    }
   }
 
   async signin(email: string, password: string) {
