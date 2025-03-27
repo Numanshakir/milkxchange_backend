@@ -31,3 +31,12 @@ export class SocialSignupDto {
   @IsOptional()
   password?: string | null; // ✅ Required for normal signup
 }
+
+export class ResetPasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}

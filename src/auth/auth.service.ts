@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { SocialSignupDto } from './dto/sign_up.dto';
+import { ResetPasswordDto, SocialSignupDto } from './dto/sign_up.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,5 +34,18 @@ export class AuthService {
     }
     const token = this.jwtService.sign({ userId: user.id });
     return { access_token: token, user };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    const user = await this.userService.findUserByEmail(dto.email);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return this.userService.updateUser(
+      user.id,
+      undefined,
+      dto.email,
+      dto.password,
+    );
   }
 }

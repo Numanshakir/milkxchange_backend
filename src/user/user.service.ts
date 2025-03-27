@@ -13,7 +13,21 @@ export class UserService {
       data: { email, password: hashedPassword, name },
     });
   }
-
+  async updateUser(
+    id: number,
+    name?: string,
+    email?: string,
+    newPassword?: string,
+  ) {
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      newPassword = hashedPassword;
+    }
+    return this.prisma.user.update({
+      where: { id },
+      data: { email, password: newPassword, name },
+    });
+  }
   async createSocialUser(dto: SocialSignupDto) {
     return this.prisma.user.create({
       data: { email: dto.email, name: dto.name, uid: dto.uid },

@@ -4,13 +4,14 @@ import {
   Body,
   Get,
   UseGuards,
-  Param,
   ValidationPipe,
+  Param,
+  Put,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
-import { SocialSignupDto } from './dto/sign_up.dto';
+import { ResetPasswordDto, SocialSignupDto } from './dto/sign_up.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -35,7 +36,10 @@ export class AuthController {
   async signin(@Body() body: { email: string; password: string }) {
     return this.authService.signin(body.email, body.password);
   }
-
+  @Put('reset-password')
+  resetPassword(@Body(ValidationPipe) body: ResetPasswordDto) {
+    return this.authService.resetPassword(body);
+  }
   @UseGuards(JwtAuthGuard)
   @Get('profile/:id')
   getProfile(@Param('id') id: number) {
