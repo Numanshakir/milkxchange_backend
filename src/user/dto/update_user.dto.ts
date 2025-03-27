@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserDto {
   @IsString()
@@ -31,6 +31,9 @@ export class UpdateUserDto {
   @IsOptional()
   pumped?: string | null;
   @IsString()
+  @IsOptional()
+  profilePic?: string | null;
+  @IsNumber()
   @IsOptional()
   milkPrice?: number | null;
 }

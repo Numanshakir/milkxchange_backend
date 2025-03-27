@@ -30,4 +30,5 @@ model User {
   attributes    String[] @default([])
   pumped        String?
   milkPrice     Decimal? @default(0.0)
+  profilePic    String?
 }
