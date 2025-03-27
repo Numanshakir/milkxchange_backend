@@ -52,4 +52,20 @@ export class UserService {
   async findAllUsers() {
     return this.prisma.user.findMany();
   }
+
+  async getMatches(userId: number) {
+    const user = await this.findUserById(userId);
+    if (user) {
+      return this.prisma.user.findMany({
+        where: {
+          id: {
+            not: Number(userId),
+          },
+          account_type: {
+            not: user.account_type,
+          },
+        },
+      });
+    }
+  }
 }
