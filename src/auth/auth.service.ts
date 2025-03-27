@@ -41,7 +41,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
-    return this.userService.updateUser(
+    return this.userService.updatePassword(
       user.id,
       undefined,
       dto.email,
