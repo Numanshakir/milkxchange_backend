@@ -37,3 +37,9 @@ export class UpdateUserDto {
   @IsOptional()
   milkPrice?: number | null;
 }
+
+export class AttributesDto {
+  @IsString()
+  @IsOptional()
+  name?: string | null;
+}

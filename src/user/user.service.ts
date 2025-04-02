@@ -44,9 +44,16 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { email } });
   }
   async findUserById(id: number) {
-    return this.prisma.user.findUnique({
-      where: { id: Number(id) }, // ✅ This ensures `id` remains a number
+    const user = await this.prisma.user.findUnique({
+      where: { id: Number(id) },
     });
+    if (!user) {
+      return null;
+    }
+    const attributes = await this.prisma.attribute.findMany({
+      where: { id: { in: user.attributes.map(Number) } },
+    });
+    return { ...user, attributes };
   }
 
   async findAllUsers() {

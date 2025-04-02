@@ -12,7 +12,9 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
 import { ResetPasswordDto, SocialSignupDto } from './dto/sign_up.dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -21,6 +23,12 @@ export class AuthController {
   ) {}
 
   @Post('signup')
+  @ApiOperation({ summary: 'User Signup' }) // ✅ Short description
+  @ApiResponse({ status: 201, description: 'User created successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiBody({
+    type: 'object',
+  })
   async signup(
     @Body() body: { name: string; email: string; password: string },
   ) {

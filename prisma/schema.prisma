@@ -17,18 +17,24 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  uid           String?  @unique // ✅ Nullable for normal signup
-  email         String?  @unique // ✅ Nullable for social signup
+  id            Int         @id @default(autoincrement())
+  uid           String?     @unique // ✅ Nullable for normal signup
+  email         String?     @unique // ✅ Nullable for social signup
   name          String?
   password      String? // ✅ Required for normal signup, null for social
-  createdAt     DateTime @default(now())
+  createdAt     DateTime    @default(now())
   account_type  String?
   mobile_number String?
   location      String?
   about         String?
-  attributes    String[] @default([])
+  attributes    String[]
   pumped        String?
-  milkPrice     Decimal? @default(0.0)
+  milkPrice     Decimal?    @default(0.0)
   profilePic    String?
+}
+
+model Attribute {
+  id     Int     @id @default(autoincrement())
+  name   String?
+
 }

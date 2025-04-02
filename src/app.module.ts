@@ -5,13 +5,14 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { DatabaseModule } from 'database/database.module';
-
+import { AttributesModule } from './attributes/attributes.module';
 @Module({
   imports: [
     UserModule,
     AuthModule,
     DatabaseModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    AttributesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
