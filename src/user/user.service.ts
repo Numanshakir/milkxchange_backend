@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { DatabaseService } from 'database/database.service';
 import { SocialSignupDto } from 'src/auth/dto/sign_up.dto';
 import { UpdateUserDto } from './dto/update_user.dto';
+import { MatchFilter } from './dto/matches.dto';
 
 @Injectable()
 export class UserService {
@@ -62,8 +63,9 @@ export class UserService {
     return this.prisma.user.findMany();
   }
 
-  async getMatches(userId: number) {
+  async getMatches(userId: number, filter: MatchFilter) {
     const user = await this.findUserById(userId);
+    console.log(filter);
     if (user) {
       return this.prisma.user.findMany({
         where: {
@@ -72,6 +74,9 @@ export class UserService {
           },
           account_type: {
             not: user.account_type,
+          },
+          attributes: {
+            hasSome: filter.attributes.map(Number),
           },
         },
       });

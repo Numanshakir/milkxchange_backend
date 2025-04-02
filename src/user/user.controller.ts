@@ -1,8 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
   Param,
+  Post,
   Put,
   UseGuards,
   ValidationPipe,
@@ -10,7 +10,14 @@ import {
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update_user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { MatchFilter } from './dto/matches.dto';
 @ApiTags('User')
 @ApiBearerAuth()
 @Controller('user')
@@ -27,10 +34,18 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('matches/:userId')
-  async getMatches(@Param('userId') userId: number) {
+  @Post('matches/:userId')
+  @ApiOperation({ summary: 'matches' }) // ✅ Short description
+  @ApiResponse({ status: 201, description: 'User Fetched successfully' })
+  @ApiBody({
+    type: MatchFilter,
+  })
+  async getMatches(
+    @Param('userId') userId: number,
+    @Body() filter: MatchFilter,
+  ) {
     console.log(userId);
-    return await this.userService.getMatches(userId); // ✅ Pass user ID to service
+    return await this.userService.getMatches(userId, filter); // ✅ Pass user ID to service
   }
 
   // async getMatches(@Request() req: Request) {
