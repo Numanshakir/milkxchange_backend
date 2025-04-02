@@ -11,7 +11,12 @@ import {
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
-import { ResetPasswordDto, SocialSignupDto } from './dto/sign_up.dto';
+import {
+  ResetPasswordDto,
+  SigninDto,
+  SignupDto,
+  SocialSignupDto,
+} from './dto/sign_up.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
@@ -27,12 +32,10 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiBody({
-    type: 'object',
+    type: SignupDto,
   })
-  async signup(
-    @Body() body: { name: string; email: string; password: string },
-  ) {
-    return this.authService.signup(body.name, body.email, body.password);
+  async signup(@Body() body: SignupDto) {
+    return this.authService.signup(body);
   }
 
   @Post('social-signin')
@@ -41,7 +44,7 @@ export class AuthController {
   }
 
   @Post('signin')
-  async signin(@Body() body: { email: string; password: string }) {
+  async signin(@Body() body: SigninDto) {
     return this.authService.signin(body.email, body.password);
   }
   @Put('reset-password')
