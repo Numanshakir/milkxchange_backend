@@ -66,9 +66,11 @@ export class UserService {
   async getMatches(userId: number, filter: MatchFilter) {
     const user = await this.findUserById(userId);
     console.log(filter);
+    let data = {};
+
     if (user) {
-      return this.prisma.user.findMany({
-        where: {
+      if (filter.attributes) {
+        data = {
           id: {
             not: Number(userId),
           },
@@ -78,7 +80,19 @@ export class UserService {
           attributes: {
             hasSome: filter.attributes.map(Number),
           },
-        },
+        };
+      } else {
+        data = {
+          id: {
+            not: Number(userId),
+          },
+          account_type: {
+            not: user.account_type,
+          },
+        };
+      }
+      return this.prisma.user.findMany({
+        where: data,
       });
     }
   }
