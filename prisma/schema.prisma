@@ -31,10 +31,17 @@ model User {
   pumped        String?
   milkPrice     Decimal?    @default(0.0)
   profilePic    String?
+  Favourite     Favourite[]
 }
 
 model Attribute {
-  id     Int     @id @default(autoincrement())
-  name   String?
+  id   Int     @id @default(autoincrement())
+  name String?
+}
 
+model Favourite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
