@@ -17,7 +17,13 @@ import {
   SignupDto,
   SocialSignupDto,
 } from './dto/sign_up.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -52,6 +58,7 @@ export class AuthController {
     return this.authService.resetPassword(body);
   }
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get('profile/:id')
   getProfile(@Param('id') id: number) {
     const user = this.userService.findUserById(id);

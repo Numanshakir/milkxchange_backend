@@ -27,7 +27,7 @@ model User {
   mobile_number String?
   location      String?
   about         String?
-  attributes    String[]
+  attributes    Int[]
   pumped        String?
   milkPrice     Decimal?    @default(0.0)
   profilePic    String?

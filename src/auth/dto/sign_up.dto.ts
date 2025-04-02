@@ -10,7 +10,6 @@ export class SignupDto {
   @IsOptional()
   @ApiPropertyOptional({
     example: 'John Doe',
-    description: 'User name',
     nullable: true,
   })
   name?: string | null; // ✅ Optional

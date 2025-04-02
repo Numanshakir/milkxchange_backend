@@ -38,7 +38,9 @@ export class UserService {
   }
 
   async findUserByUID(uid: string) {
-    return this.prisma.user.findUnique({ where: { uid } });
+    return this.prisma.user.findUnique({
+      where: { uid },
+    });
   }
   async findUserByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
